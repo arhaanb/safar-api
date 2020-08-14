@@ -5,7 +5,10 @@ var UserSchema = new Schema({
 
 	username: String,
 	name: String,
-	money: Number
+	money: {
+		type: Number,
+		default: 0
+	}
 
 });
 
