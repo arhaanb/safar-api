@@ -63,6 +63,16 @@ router.post('/users', (req, res) => {
 
 });
 
+//get specific user
+
+router.post('/user', (req, res) => {
+
+	User.findOne({ username: req.body.username }).then(user => {
+		return res.send(user)
+	})
+
+});
+
 //update money
 router.post('/money', (req, res) => {
 
@@ -83,7 +93,7 @@ router.post('/money', (req, res) => {
 });
 
 //create ticket
-router.post('/ticket', (req, res) => {
+router.post('/tickets', (req, res) => {
 
 	var ticketData = {
 		username: req.body.username,
@@ -98,7 +108,7 @@ router.post('/ticket', (req, res) => {
 		} else {
 			console.log(user)
 			var initmoney = user.money
-			user.money = initmoney - 100
+			user.money = initmoney + 50
 			user.save()
 		}
 	})
@@ -110,35 +120,28 @@ router.post('/ticket', (req, res) => {
 		}
 	});
 
-	return res.redirect('/safar/users')
-
-});
-
-router.post('/money', (req, res) => {
-
-	Ticket.find({ username: req.body.username }).exec(function (err, tickets) {
-		if (err) {
-			console.log(err)
-			res.send('error')
-		} else {
-			return res.send(tickets)
-		}
-	})
-
-	return res.send({ msg: "Money added to account succesfully." })
+	return res.send({ msg: "Ticket booked succesfully" })
 
 });
 
 
 //get all tickets
-
 router.get('/tickets', (req, res) => {
+	Ticket.find({}, { _id: 0, __v: 0 }).then(users => {
+		return res.send(users)
+	})
+});
 
-	Ticket.find().then(tickets => {
+//get specific tickets
+router.post('/ticket', (req, res) => {
+
+	Ticket.find({ username: req.body.username }, { __v: 0 }).then(tickets => {
 		return res.send(tickets)
 	})
 
 });
+
+
 
 // Metro stations
 router.get('/metro', (req, res) => {
